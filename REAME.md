@@ -2,7 +2,7 @@
 
 Hello!
 
-I decided to create an application that have many cards game that people may or may not know about. 
+I decided to create an application that has many cards game that people may or may not know about. 
 
 implementations I hope to make include:
 
