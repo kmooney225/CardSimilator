@@ -1,38 +1,46 @@
-import Card.CardValue;
-import Card.Suit;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Stack;
 
 public class Deck {
 	
-	private int deckSize;
-	private String deckType;
-
-	public Deck (int deckSize, String deckType) {
-		this.deckSize = deckSize;
-		this.deckType = deckType;
+	private final Stack<Card> deckCards;
+	
+	private Deck(final boolean needShuffle) {
+		this.deckCards = initDeck(needShuffle);
+	}
+	
+	private Stack<Card> initDeck(boolean needShuffle) {
 		
-	}
-	
-	public int getDeckSize() {
-		return deckSize;
-	}
-	
-	public String getDeckType() {
-		return deckType;
-	}
-	
-	public void setDeckSize() {
-		if (deckType == "Normal")
-		{
-			deckSize = 52;
-		}
-		else if (deckType == "Jokers")
-		{
-			deckSize = 54;
+		final Stack<Card> deckCards = new Stack<>();
+		for(final Card.Suit suit : Card.Suit.values()) {
+			for(final Card.Rank rank : Card.Rank.values()) {
+				deckCards.push(Card.getCard(rank, suit));
+			}
 		}
 		
-		else 
-		{ 
-			deckSize = 0;
+		if(needShuffle) {
+			Collections.shuffle(deckCards);
+		} else {
+			Collections.sort(deckCards);
 		}
+		return deckCards;
+	}
+	
+	public static Deck newShuffleSingleDeck() {
+		return new Deck(true);
+	}
+	
+	public static Deck newUnshuffleSingleDeck() {
+		return new Deck(false);
+	}
+	
+	public int size() {
+		return this.deckCards.size();
+	}
+	
+	public Optional<Card> deal() {
+		return this.deckCards.empty() ? Optional.empty() :
+			Optional.of(this.deckCards.pop());
 	}
 }
